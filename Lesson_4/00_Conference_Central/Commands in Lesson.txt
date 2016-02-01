@@ -1,0 +1,47 @@
+ndb.Key(Kind, unique field)
+Create a key which can be used to identify the entity uniquely
+Eg: p_key = ndb.key(Profile, user_id='k.srirammanoj@gmail.com')
+
+Model.allocate_ids(size=1..n, parent=p_key)[nth element]
+Allocate ids to the to the model entities which depend up on a parent to store
+the values in the data store
+Eg: c_id = Conference.allocate_ids(size = 1, p_key)[0]
+The above, allocates ids to "ONE" conference object. Increase the size and
+access the rest
+
+ndb.Key(Kind, unique field, parent = ndb_generated_key)
+Create a key which is particular with respect to its parent field
+Eg: c_key = ndb.key(Conference, c_id, p_key)
+
+Model.query()
+Make a Query object for a kind
+Eg: q = Conference.query()
+q, is a query object which stores all the entities of the kind "Conference"
+
+QueryObject.get()
+Retrieves a single result
+Eg: q.get()
+
+QueryObject.order(field)
+Orders the result according to the field specified
+Eg: q.order(Conference.name)
+
+QueryObject.fetch()
+Fetches all the results
+Eg: q.fetch()
+
+QueryObject.fetch(n)
+Fetches the first n results
+Eg: q.fetch(5)
+
+QueryObject can be used as an interator
+
+QueryObject.filter(field)
+Add a filter before we fetch the results
+Eg: q.filter(Conference.month==2)
+
+How to make a descendant Query
+QueryObject = Kind.query(ancestor = ndb.key(Kind, id))
+Query Object stores all the entities of a particular Kind, which have their
+parent as the ID.
+Eg: q = Conferences.query(ancestor=ndb.key(Profile, user_id))
