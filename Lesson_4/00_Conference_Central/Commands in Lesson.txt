@@ -44,4 +44,17 @@ How to make a descendant Query
 QueryObject = Kind.query(ancestor = ndb.key(Kind, id))
 Query Object stores all the entities of a particular Kind, which have their
 parent as the ID.
-Eg: q = Conferences.query(ancestor=ndb.key(Profile, user_id))
+Eg: q =  Conferences.query(ancestor=ndb.key(Profile, user_id))
+
+
+Querying with filters
+QueryObject = Kind.query(Kind.attribute == "Value")
+Eg: confs = Conference.query(Conference.city == "London")
+
+#Advance  Filter Node
+QueryObject = Kind.query()
+field = "attribute"
+operator = "!=||==||<||>||<=||>=||AND||OR"
+value = "value"
+FilterNode = ndb.query.FilterNode(field, operator, value)
+QueryObject = QueryObject.filter(f)
