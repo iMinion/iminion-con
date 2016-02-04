@@ -54,7 +54,7 @@ Eg: confs = Conference.query(Conference.city == "London")
 #Advance  Filter Node
 QueryObject = Kind.query()
 field = "attribute"
-operator = "!=||==||<||>||<=||>=||AND||OR"
+operator = "!=||==||<||>||<=||>=||IN"
 value = "value"
 FilterNode = ndb.query.FilterNode(field, operator, value)
 QueryObject = QueryObject.filter(f)

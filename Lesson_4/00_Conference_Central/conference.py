@@ -49,6 +49,22 @@ DEFAULTS = {
     "topics": [ "Default", "Topic" ],
 }
 
+OPERATORS = {
+            'EQ':   '=',
+            'GT':   '>',
+            'GTEQ': '>=',
+            'LT':   '<',
+            'LTEQ': '<=',
+            'NE':   '!='
+            }
+
+FIELDS =    {
+            'CITY': 'city',
+            'TOPIC': 'topics',
+            'MONTH': 'month',
+            'MAX_ATTENDEES': 'maxAttendees',
+            }
+
 @endpoints.api( name='conference',
                 version='v1',
                 allowed_client_ids=[WEB_CLIENT_ID, API_EXPLORER_CLIENT_ID],
@@ -264,11 +280,13 @@ class ConferenceApi(remote.Service):
         # 1: city equals to London
         # 2: topic equals "Medical Innovations"
         # q = q.filter("Medical Innovations" IN Conference.topic)
-        field = "topic"
-        operator = "IN"
-        value = "Medical Innovations"
-        f = ndb.query.FilterNode(field, operator, value)
-        q = q.filter(f)
+        # field = "topics"
+        # operator = "="
+        # value = "Medical Innovations"
+        # f = ndb.query.FilterNode(field, operator, value)
+        q = q.filter(Conference.topics == "Medical Innovations")
+        q = q.order(Conference.name)
+        q = q.filter(Conference.maxAttendees > 10)
         return ConferenceForms(
             items=[self._copyConferenceToForm(conf, "") for conf in q]
         )        
