@@ -1,0 +1,6 @@
+Memcache 
+
+memcache.set(some_key, some_string): puts the string object in the set
+memcache.get(some_key): returs the the string value associated with the particular key
+memcache.delete(some_key): removes it from the memcache
+
