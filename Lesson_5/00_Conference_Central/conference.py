@@ -24,6 +24,7 @@ from google.appengine.api import memcache
 from google.appengine.api import taskqueue
 from google.appengine.ext import ndb
 from google.appengine.api import memcache
+from google.appengine.api import taskqueue
 
 from models import StringMessage
 from models import ConflictException
@@ -155,7 +156,10 @@ class ConferenceApi(remote.Service):
         # create Conference, send email to organizer confirming
         # creation of Conference & return (modified) ConferenceForm
         Conference(**data).put()
-        # TODO 2: add confirmation email sending task to queue
+        taskqueue.add(params={'email': user.email(),
+            'conferenceInfo': repr(request)},
+            url='/tasks/send_confirmation_email'
+        )
 
         return request
 
@@ -528,7 +532,7 @@ class ConferenceApi(remote.Service):
         # return an existing announcement from Memcache or an empty string.
         ann = memcache.get(MEMCACHE_ANNOUNCEMENTS_KEY)
         announcement = ""
-        if ann == None:
+        if ann != None:
             announcement = ann
         return StringMessage(data=announcement)
 
